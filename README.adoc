@@ -1,0 +1,8 @@
+== Troubleshooting
+
+* Para corrigir problemas de import, mesmo o módulo estando importando corretamente, builde o projeto com o comando:
+
+[source,.bash]
+---
+dune build
+---
