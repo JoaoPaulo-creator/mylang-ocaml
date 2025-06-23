@@ -1,4 +1,5 @@
 open Token
+open Errors
 
 module Env = struct
         type t = {
@@ -13,10 +14,10 @@ module Env = struct
         let define env name value = 
                 Hashtbl.replace env.values name value
 
-        let rec get env token =
+        let get env token =
                 match Hashtbl.find_opt env.values token.lexeme with
                 | Some v -> v
-                | None -> raise (Interpreter.RuntimeError (token, "Undefined variable: '" ^ token.lexeme ^ "'."))
+                | None -> raise (RuntimeError (token, "Undefined variable: '" ^ token.lexeme ^ "'."))
 
         let rec assign env token value =
                 if Hashtbl.mem env.values token.lexeme then
@@ -25,5 +26,5 @@ module Env = struct
                 else 
                         match env.enclosing  with
                         | Some parent -> assign parent token value
-                        | None -> raise (Interpreter.RuntimeError (token, "Undefined variable: '" ^ token.lexeme ^ "'."))
+                        | None -> raise (RuntimeError (token, "Undefined variable: '" ^ token.lexeme ^ "'."))
 end

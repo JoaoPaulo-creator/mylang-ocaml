@@ -1,4 +1,6 @@
 (executable
  (public_name mylang-ocaml)
  (name main)
- (libraries mylang_ocaml))
+ (modules main)
+ (libraries mylang_ocaml)
+ )

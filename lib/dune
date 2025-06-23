@@ -1,2 +1,13 @@
 (library
- (name mylang_ocaml))
+ (name mylang_ocaml)
+ (modules
+   ast_printer
+   errors
+   environment
+   expr
+   interpreter
+   parser
+   scanner
+   stmt
+   token)
+ )

@@ -1,16 +1,14 @@
 open Expr
-open Stmt
 open Token
 open Environment
+open Errors
 
-exception RuntimeError of token * string
-
-let rec is_truthy = function
+let is_truthy = function
   | Lit_nil -> false
   | Lit_bool b -> b
   | _ -> true
 
-let rec is_equal l1 l2 =
+let is_equal l1 l2 =
   match l1, l2 with
   | Lit_nil, Lit_nil -> true
   | Lit_nil, _ | _, Lit_nil -> false
