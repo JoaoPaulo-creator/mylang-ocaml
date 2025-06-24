@@ -3,6 +3,8 @@ open Errors
 open Stmt
 open Token
 open Environment
+open Parser
+open Scanner
 
 let read_file filename =
   let file = open_in filename in
@@ -19,9 +21,9 @@ let read_file filename =
   content
 
 let rec run source =
-  let scanner = Scanner.make source in
-  let tokens = Scanner.scan_tokens scanner in
-  let statements = Parser.parse tokens in
+  let scanner = make source in
+  let tokens = scan_tokens scanner in
+  let statements = parse tokens in
   let env = Env.create () in
   List.iter (fun stmt ->
     match stmt with
