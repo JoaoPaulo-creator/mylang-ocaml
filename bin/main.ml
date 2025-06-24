@@ -1,4 +1,5 @@
 open Interpreter
+open Errors
 open Stmt
 open Token
 open Environment
@@ -61,5 +62,5 @@ let () =
     run source
   with
   | Sys_error msg -> prerr_endline ("Error: " ^ msg); exit 1
-                | Parser.ParseError (tok, msg) -> prerr_endline ("Parse error at line " ^ string_of_int tok.line ^ ": " ^ msg); exit 1;
+  | Parser.ParseError (tok, msg) -> prerr_endline ("Parse error at line " ^ string_of_int tok.line ^ ": " ^ msg); exit 1
   | RuntimeError (tok, msg) -> prerr_endline ("Runtime error at line " ^ string_of_int tok.line ^ ": " ^ msg); exit 1

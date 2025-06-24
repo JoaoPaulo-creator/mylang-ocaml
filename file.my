@@ -8,3 +8,8 @@ print(lang);
 
 var lang = "Linguagem C";
 print(lang);
+
+print(2+2);
+
+
+
