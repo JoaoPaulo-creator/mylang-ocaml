@@ -1,21 +1,65 @@
-open Expr
-open Token
 open Interpreter
+open Stmt
+open Token
 open Environment
 
-let () =
-  let expr =
-    Binary (
-      Unary (
-        { token_type = Minus; lexeme = "-"; literal = None; line = 1 },
-        Literal (Lit_number 123.0)
-      ),
-      { token_type = Star; lexeme = "*"; literal = None; line = 1 },
-      Grouping (Literal (Lit_number 45.67))
-    )
+let read_file filename =
+  let file = open_in filename in
+  let content =
+    let rec read_all acc =
+      try
+        let line = input_line file in
+        read_all (acc ^ line ^ "\n")
+      with End_of_file -> acc
+    in
+    read_all ""
   in
+  close_in file;
+  content
 
+let rec run source =
+  let scanner = Scanner.make source in
+  let tokens = Scanner.scan_tokens scanner in
+  let statements = Parser.parse tokens in
   let env = Env.create () in
-  let result = evaluate expr env in
-  (* Printf.printf "Ast: %s\n" (Ast_printer.print expr); *)
-  Printf.printf "Evaluated: %s\n" (stringify result)
+  List.iter (fun stmt ->
+    match stmt with
+    | Expression expr -> ignore (evaluate expr env)
+    | Print expr ->
+        let value = evaluate expr env in
+        print_endline (stringify value)
+    | Var (name, init) ->
+        let value = match init with
+          | Some expr -> evaluate expr env
+          | None -> Lit_nil
+        in
+        Env.define env name.lexeme value
+    | Block stmts ->
+        let new_env = Env.create_enclosing env in
+        List.iter (fun s -> ignore (evaluate_stmt s new_env)) stmts
+  ) statements
+
+and evaluate_stmt stmt env =
+  match stmt with
+  | Expression expr -> evaluate expr env
+  | Print expr ->
+      let value = evaluate expr env in
+      print_endline (stringify value); Lit_nil
+  | Var (name, init) ->
+      let value = match init with
+        | Some expr -> evaluate expr env
+        | None -> Lit_nil
+      in
+      Env.define env name.lexeme value; Lit_nil
+  | Block stmts ->
+      let new_env = Env.create_enclosing env in
+      List.iter (fun s -> ignore (evaluate_stmt s new_env)) stmts; Lit_nil
+
+let () =
+  try
+    let source = read_file "file.my" in
+    run source
+  with
+  | Sys_error msg -> prerr_endline ("Error: " ^ msg); exit 1
+                | Parser.ParseError (tok, msg) -> prerr_endline ("Parse error at line " ^ string_of_int tok.line ^ ": " ^ msg); exit 1;
+  | RuntimeError (tok, msg) -> prerr_endline ("Runtime error at line " ^ string_of_int tok.line ^ ": " ^ msg); exit 1
