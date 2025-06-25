@@ -1,11 +1,11 @@
 var a = "Rabeshinha";
 
 if (a == "Joao") {
-                print "Ola, Joao";
+  print "Ola, Joao";
 } else if (a == "Rabeshao") {
-        print "vai a merda, Rabeshao";
+  print "vai a merda, Rabeshao";
 } else {
-        print "oi, bebecinho <3";
+  print "oi, bebecinho <3";
 }
 
 var n1 = 2;
@@ -13,9 +13,9 @@ var n2 = 4;
 var result = n1 + n2;
 
 if (result == 4) {
-        print("tá ok");
+  print("tá ok");
 } else if (result == 5) {
-        print("não tá ok");
+  print("não tá ok");
 } else {
-        print("resulto do cálculo é um valor não esperado");
+  print("resulto do cálculo é um valor não esperado");
 }

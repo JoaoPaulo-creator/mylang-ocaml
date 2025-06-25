@@ -126,13 +126,21 @@ and var_declaration state =
         Var (name, init)
 
 and statement state =
-        if match_token state [Print] then print_statement state
-        else if match_token state [If] then if_statement state
+       if match_token state [If] then if_statement state
+        else if match_token state [Print] then print_statement state
         else if match_token state [LeftBrace] then Block (block state)
         else expression_statement state
 
 and print_statement state =
-        let value = expression state in
+        let value = 
+                if match_token state [LeftParen] then (
+                        let v = expression state in
+                        ignore (consume state Semicolon "Expected ')' after value.");
+                        v
+                        ) else (
+                expression state
+                )
+        in
         ignore (consume state Semicolon "Expected ';' after value.");
         Print value
 
