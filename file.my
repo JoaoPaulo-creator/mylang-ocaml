@@ -1,15 +1,21 @@
-var lang = "Mylang";
-print(lang);
+var a = "Rabeshinha";
 
-{
-  var lang = "C++";
-  print(lang);
+if (a == "Joao") {
+                print "Ola, Joao";
+} else if (a == "Rabeshao") {
+        print "vai a merda, Rabeshao";
+} else {
+        print "oi, bebecinho <3";
 }
 
-var lang = "Linguagem C";
-print(lang);
+var n1 = 2;
+var n2 = 4;
+var result = n1 + n2;
 
-print(2+2);
-
-
-
+if (result == 4) {
+        print("tá ok");
+} else if (result == 5) {
+        print("não tá ok");
+} else {
+        print("resulto do cálculo é um valor não esperado");
+}

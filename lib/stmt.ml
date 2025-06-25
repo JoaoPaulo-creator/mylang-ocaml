@@ -6,4 +6,5 @@ type stmt =
         | Print of expr
         | Var of token * expr option
         | Block of stmt list
+        | If of expr * stmt * stmt option
 
